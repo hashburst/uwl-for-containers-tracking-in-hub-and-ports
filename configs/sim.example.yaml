@@ -1,0 +1,19 @@
+simulation:
+  server_ip: "127.0.0.1"
+  server_port: 5555
+  tick_hz: 1.0
+yard:
+  anchors:
+    - {anchor_id: "A1", x_m: 0.0,  y_m: 0.0}
+    - {anchor_id: "A2", x_m: 60.0, y_m: 0.0}
+    - {anchor_id: "A3", x_m: 0.0,  y_m: 40.0}
+    - {anchor_id: "A4", x_m: 60.0, y_m: 40.0}
+  tags:
+    - {tag_id: "T001", x_m: 10.0, y_m: 10.0}
+    - {tag_id: "T002", x_m: 45.0, y_m: 25.0}
+radio_model:
+  tx_power_dbm_at_1m: -59
+  path_loss_exponent: 2.6
+  rssi_noise_std_db: 3.0
+security:
+  ingest_key_b64: "uCFTJmM0cGZ3aE9pMjh6SFlGZ1k0d0Z4dDk4b2xYQm0="
