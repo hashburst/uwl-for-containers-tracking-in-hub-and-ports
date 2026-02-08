@@ -1,6 +1,7 @@
-# UWL (Ultra‑local Wireless Locator) – Closed Network Container Tracking (Port)
+# UWL (Ultra‑local Wireless Locator)
+## Closed Network Container Tracking
 
-This repository is a **prototype reference implementation** for a *closed, private* local positioning network for container yards.
+This repository is a **prototype reference implementation** for a *closed, private* local positioning network for container yards (in a Logistic Hub/Harbour/Port).
 It is designed to work **without public cloud** and to support **privacy-by-design** through encrypted “beacon” packets inspired by
 the *Transport Encrypted Protocol (TEP)* approach (see `docs/` for a conceptual mapping).
 
