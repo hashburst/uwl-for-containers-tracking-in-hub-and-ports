@@ -1,0 +1,8 @@
+gateway:
+  mode: uwb_serial
+  anchor_id: A1
+  uwb_serial_device: /dev/ttyACM0
+  uwb_serial_baud: 115200
+  uwb_json_tag_key: tag_id
+  uwb_json_rssi_key: rssi_dbm
+  uwb_json_toa_key: toa_ns

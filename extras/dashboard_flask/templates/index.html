@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UWL Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="" />
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    header { padding: 12px 16px; background: #111; color: #eee; }
+    #map { height: calc(100vh - 80px); }
+    .row { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+    .kv { color: #bbb; }
+    .val { color: #fff; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div><strong>UWL Dashboard</strong></div>
+      <div class="kv">Tag:</div>
+      <div class="val" id="tag">{{ tag_id }}</div>
+      <div class="kv">Server:</div>
+      <div class="val" id="srv">{{ server_base }}</div>
+      <div class="kv">Posizione filtrata:</div>
+      <div class="val" id="coords">X=0.00m Y=0.00m</div>
+    </div>
+  </header>
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+  <script>
+    // "Simple CRS": coordinate cartesiane in metri
+    const map = L.map('map', { crs: L.CRS.Simple, minZoom: -2 });
+
+    // Bounds iniziali: regola questi valori in base alla planimetria del porto
+    const bounds = [[-50, -50], [250, 250]];
+    map.fitBounds(bounds);
+
+    const filteredMarker = L.marker([0, 0]).addTo(map).bindPopup('Filtrato');
+    const rawMarker = L.circle([0, 0], { radius: 1, color: 'gray', opacity: 0.6 }).addTo(map);
+
+    const tagId = document.getElementById('tag').innerText;
+
+    async function tick() {
+      try {
+        const r = await fetch(`/api/position/${tagId}`);
+        const d = await r.json();
+        if (d.error) return;
+
+        // Leaflet Simple CRS: [y, x]
+        filteredMarker.setLatLng([d.y, d.x]);
+        rawMarker.setLatLng([d.raw_y, d.raw_x]);
+
+        document.getElementById('coords').innerText = `X=${d.x.toFixed(2)}m Y=${d.y.toFixed(2)}m (raw X=${d.raw_x.toFixed(2)} Y=${d.raw_y.toFixed(2)})`;
+      } catch (e) {
+        // silenzioso
+      }
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
